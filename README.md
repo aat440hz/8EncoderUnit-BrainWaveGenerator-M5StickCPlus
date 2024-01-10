@@ -65,8 +65,6 @@ Contributions are welcome! If you would like to contribute to this project, plea
 
 5. Create a pull request.
 
-Please make sure to follow the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md).
-
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
