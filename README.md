@@ -43,7 +43,7 @@ Before you begin, ensure you have met the following requirements:
 
 2. Use a web browser on a device connected to the Brainwave Generator WiFi network to access the audio visual interface by entering the M5StickC Plus's IP address in the address bar (192.168.4.1) and click play.
 
-3. Adjust the frequencies and pulse rate using the interface.
+3. Adjust the frequencies and pulse rate using the 8Encoder Unit.
 
 4. Click the "Play" button to start generating audio frequencies. Click it again to stop the generation.
 
