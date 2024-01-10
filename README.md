@@ -1,6 +1,6 @@
 # 8EncoderUnit BrainWave Generator for M5StickC Plus
 
-This Arduino project designed for the M5StickC Plus utilizes the UNIT_8ENCODER inputs to generate brainwave-like audio frequencies and provides real-time visualization on an oscilloscope. This project enables users to experiment with various frequencies and pulse rates to create audiovisual patterns.
+This Arduino project designed for the M5StickC Plus utilizes the 8Encoder Unit inputs to generate brainwave-like audio frequencies and provides real-time visualization on an oscilloscope. This project enables users to experiment with various frequencies and pulse rates to create audiovisual patterns.
 
 ## Table of Contents
 
