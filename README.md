@@ -45,7 +45,7 @@ Before you begin, ensure you have met the following requirements:
 
 3. Adjust the frequencies and pulse rate using the 8Encoder Unit.
 
-4. Click the "Play" button to start generating audio frequencies. Click it again to stop the generation.
+4. Click Button A on the M5StickCPlus to start generating audio frequencies. Click it again to stop the generation.
 
 5. Visualize the audio patterns on the oscilloscope displayed on the web interface.
 
