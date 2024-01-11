@@ -172,7 +172,7 @@ void handleRoot() {
     "<head>"
     "<title>Brainwave Generator</title>"
     "<style>"
-    "  body { text-align: center; font-family: Terminal; margin-top: 50px; }"
+    "  body { text-align: center; font-family: Terminal; margin-top: 50px; background-color: black; color: white; }"
     "  canvas {"
     "    border:1px solid #000;"
     "    margin-top: 10px;"
