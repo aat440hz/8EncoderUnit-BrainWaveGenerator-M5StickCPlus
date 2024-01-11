@@ -301,7 +301,7 @@ void handleRoot() {
     "</head>"
     "<body>"
     "<h1>Brainwave Generator</h1>"
-    "<canvas id='oscilloscope' width='640' height='120'></canvas>"
+    "<canvas id='oscilloscope' width='640' height='480'></canvas>"
     "<hr/>"
     "<button id='playButton' onclick='togglePlay()'>Play</button>"
     "<p>Adjust the frequencies and pulse on the device.</p>"
