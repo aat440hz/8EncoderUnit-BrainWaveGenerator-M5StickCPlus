@@ -34,10 +34,8 @@ void updateDisplay(float f1, float f2, float pulse);
 void startSound(float frequency1, float frequency2, float pulseRate);
 void stopSound();
 void zeroEncoders();
-
-void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
-    // Handle WebSocket event
-}
+void handleRoot();
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length);
 
 void setup() {
     M5.begin();
@@ -54,6 +52,8 @@ void setup() {
     server.begin();
     webSocket.begin();
     webSocket.onEvent(webSocketEvent);
+
+    zeroEncoders();
 }
 
 void loop() {
@@ -80,16 +80,13 @@ void loop() {
 
     // Check if the values have changed
     if (freq1 != lastFreq1 || freq2 != lastFreq2 || pulseRate != lastPulseRate) {
-        // Update the display only when there's a change
         updateDisplay(freq1, freq2, pulseRate);
 
-        // Check if isPlaying and send WebSocket message
         if (isPlaying) {
-            String message = "play," + String(freq1, 2) + "," + String(freq2, 2) + "," + String(pulseRate, 2);
+            String message = "update," + String(freq1, 2) + "," + String(freq2, 2) + "," + String(pulseRate, 2);
             webSocket.broadcastTXT(message);
         }
 
-        // Update last values for the next comparison
         lastFreq1 = freq1;
         lastFreq2 = freq2;
         lastPulseRate = pulseRate;
@@ -98,7 +95,7 @@ void loop() {
     // Check if button A is pressed to toggle the playing state
     if (M5.BtnA.wasPressed()) {
         isPlaying = !isPlaying;
-        String message = String(isPlaying ? "play" : "stop") + "," + String(freq1, 2) + "," + String(freq2, 2) + "," + String(pulseRate, 2);
+        String message = (isPlaying ? "play," : "stop,") + String(freq1, 2) + "," + String(freq2, 2) + "," + String(pulseRate, 2);
         webSocket.broadcastTXT(message);
     }
 
@@ -106,7 +103,6 @@ void loop() {
 }
 
 float calculateFrequency(int baseValue, int fineTuneValue, int multiplierValue) {
-    // Ensure non-negative values
     if (baseValue < 0) baseValue = 0;
     if (fineTuneValue < 0) fineTuneValue = 0;
     if (multiplierValue < 0) multiplierValue = 0;
@@ -118,7 +114,6 @@ float calculateFrequency(int baseValue, int fineTuneValue, int multiplierValue) 
 }
 
 float calculatePulseRate(int baseValue, int fineAdjustment) {
-    // Ensure non-negative values
     if (baseValue < 0) baseValue = 0;
     if (fineAdjustment < 0) fineAdjustment = 0;
 
@@ -136,17 +131,16 @@ void updateDisplay(float f1, float f2, float pulse) {
 }
 
 void startSound(float frequency1, float frequency2, float pulseRate) {
-    stopSound(); // Stop any existing sound
-    // Rest of your sound generation code here...
-    // Update current values
+    // Implementation for starting sound
+    // You may need to fill this in with your specific sound generation logic
     currentFreq1 = frequency1;
     currentFreq2 = frequency2;
     currentPulseRate = pulseRate;
 }
 
 void stopSound() {
-    // Stop the sound generation and update current values
-    // Rest of your stop sound code here...
+    // Implementation for stopping sound
+    // This typically involves stopping and resetting any audio processes you have started
     currentFreq1 = 0.0;
     currentFreq2 = 0.0;
     currentPulseRate = 0.0;
@@ -163,6 +157,11 @@ int adjustedEncoderValue1(int rawValue) {
 
 int adjustedEncoderValue2(int rawValue) {
     return rawValue - encoderZeroValue2;
+}
+
+void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
+    // Handle incoming WebSocket messages
+    // This function will be called when a WebSocket message is received
 }
 
 void handleRoot() {
@@ -272,6 +271,15 @@ void handleRoot() {
     "  isPlaying = false;"
     "}"
 
+    "function updateSound(frequency1, frequency2, pulseRate) {"
+    "  if (!isPlaying) return;"
+    "  originalFreq1 = frequency1;"
+    "  originalFreq2 = frequency2;"
+    "  oscillator1.frequency.setValueAtTime(frequency1, audioCtx.currentTime);"
+    "  oscillator2.frequency.setValueAtTime(frequency2, audioCtx.currentTime);"
+    "  lfo.frequency.setValueAtTime(pulseRate, audioCtx.currentTime);"
+    "}"
+
     "function togglePlay() {"
     "  if(isPlaying) {"
     "    stopSound();"
@@ -285,7 +293,6 @@ void handleRoot() {
     "document.addEventListener('DOMContentLoaded', function() {"
     "  canvas = document.getElementById('oscilloscope');"
     "  ctx = canvas.getContext('2d');"
-    "  document.getElementById('playButton').click();"
     "});"
 
     "var ws = new WebSocket('ws://' + window.location.hostname + ':81/');"
@@ -295,6 +302,8 @@ void handleRoot() {
     "    startSound(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));"
     "  } else if(parts[0] === 'stop') {"
     "    stopSound();"
+    "  } else if(parts[0] === 'update') {"
+    "    updateSound(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));"
     "  }"
     "};"
     "</script>"
